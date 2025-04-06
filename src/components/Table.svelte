@@ -40,6 +40,7 @@
 	let filteredAndPagedItems = $state(/** @type {{[key: string]: number | string}[]} */ ([]));
 	let currentPage = $state(1);
 	let pageSize = $state(20);
+	let activeFilters = $state(/** @type {{[key: string]: number[] | string[]}} */ ({}));
 	let searchParts = $state(/** @type {string[]} */ ([]));
 	let sortOrder = $state();
 
@@ -129,7 +130,15 @@
 
 	const itemFilter = async () => {
 		filteredListItems = /** @type {{[key: string]: number | string}[]} */ (data);
-
+		if (activeFilters) {
+			Object.entries(activeFilters).forEach(([field, filterArray]) => {
+				if (!filterArray.length) return;
+				const accessor = fields.find((f) => f.key === field)?.accessor;
+				filteredListItems = filteredListItems.filter((item) =>
+					filterArray.includes(item[accessor])
+				);
+			});
+		}
 		if (searchParts.length) {
 			const searchFields = fields.filter((field) => field.searchable);
 			filteredListItems = filteredListItems.filter((item) =>
@@ -197,7 +206,7 @@
 						oninput={(/** @type {InputEvent} */ event) =>
 							search(/** @type {HTMLInputElement} */ (event.target).value)}
 					/>
-					<!-- <button onclick={() => (filterRowOpen = !filterRowOpen)}>filters</button> -->
+					<button onclick={() => (filterRowOpen = !filterRowOpen)}>filters</button>
 				</td>
 			</tr>
 		{/if}
@@ -229,7 +238,12 @@
 							class="checkbox-multiselect"
 							options={getOptions(field)}
 							selectId="abc"
-							onSelectedValuesUpdated={(values) => console.log(values)}
+							onSelectedValuesUpdated={async (values) => {
+								activeFilters[field.key] = values;
+								loading = true;
+								await sleep(0);
+								itemFilter();
+							}}
 						/>
 					{/if}
 				</td>
