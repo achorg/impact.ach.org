@@ -1,7 +1,14 @@
 <script>
 	import Table from '$components/Table.svelte';
+	/** @import { Item } from '$components/Table.svelte' */
 
 	import awards from '../data/terminated-awards.2025-04-04.json';
+
+	let filteredListItems = $state(/** @type {Item[]} */ ([]));
+	let filteredItemsCount = $derived(filteredListItems?.length);
+	let filteredItemsValue = $derived(
+		filteredListItems.reduce((acc, item) => acc + Number(item[19]), 0)
+	);
 
 	/** @param {string} text */
 	const titleCase = (text) => {
@@ -82,11 +89,25 @@
 	];
 
 	// awards.forEach((award, i) => (award[7] = i.toString()));
+
+	const onFilteredItemsUpdated = (/** @type {Item[]} */ items) => {
+		filteredListItems = items;
+	};
 </script>
 
-<Table data={awards} {fields} keyAccessor={0} id="awards-table" />
+<div class="totals">
+	Terminated Awards Filtered: <span>{filteredItemsCount.toLocaleString()}</span>; Total Value:
+	<span>${filteredItemsValue.toLocaleString()}</span>
+</div>
+<Table data={awards} {fields} keyAccessor={0} id="awards-table" {onFilteredItemsUpdated} />
 
 <style>
+	.totals span {
+		font-weight: bold;
+		color: var(--primary-color);
+		font-size: 1.2rem;
+	}
+
 	:global(#awards-table) {
 		:global {
 			thead,
@@ -113,7 +134,7 @@
 			}
 
 			tbody {
-				min-height: calc(var(--row-height) * 2);
+				/* min-height: calc(var(--row-height) * 2); */
 
 				tr:nth-child(even) td,
 				tr:nth-child(even) th {
