@@ -1,6 +1,7 @@
 <script>
 	import { tick } from 'svelte';
 	import { computePosition, shift } from '@floating-ui/dom';
+	import { findParentWithCSS } from '$lib';
 
 	/**
 	 * @typedef {Object} CheckboxMultiSelectProps
@@ -37,16 +38,26 @@
 		}
 	};
 
+	const sortedOptions = $derived(
+		// filteredOptions.toSorted(
+		// 	(a, b) =>
+		// 		selectedValues.includes(b.value) - selectedValues.includes(a.value) ||
+		// 		a.label.localeCompare(b.label)
+		// )
+		filteredOptions.toSorted((a, b) => a.label.localeCompare(b.label))
+	);
+
 	const positionDropdown = () => {
 		computePosition(input, dropdown, {
 			placement: 'bottom-start',
 			middleware: [shift({ padding: 2 })]
 		}).then(({ x, y }) => {
 			const inputTop = input.getBoundingClientRect().top;
+			const bottom = findParentWithCSS(input, 'overflow', 'hidden')?.getBoundingClientRect().bottom;
 			Object.assign(dropdown.style, {
 				left: `${x}px`,
 				top: `${y + 6}px`,
-				maxHeight: `calc(100vh - ${inputTop + y + 10}px)`
+				maxHeight: `calc(${bottom ? bottom + 'px' : '100vh'} - ${inputTop + y + 10}px)`
 			});
 		});
 	};
@@ -99,7 +110,6 @@
 		spellcheck="false"
 		contenteditable="true"
 		placeholder="Type to filter..."
-		data-selected={selectedValues.length}
 		class:show-indicator={selectedValues.length}
 		bind:this={input}
 		oninput={search}
@@ -114,7 +124,7 @@
 			onclick={() => {
 				selectedValues = [];
 				selectedValuesUpdated();
-			}}>×</button
+			}}>{selectedValues.length}</button
 		>
 	{/if}
 
@@ -157,7 +167,7 @@
 				{/each}
 			{/each}
 		{:else}
-			{#each options as option}
+			{#each sortedOptions as option}
 				{#if filteredOptions.includes(option)}
 					<label>
 						<input
@@ -238,13 +248,13 @@
 		display: inline-block;
 		height: 100%;
 		overflow: hidden;
-		padding: 5px 11px;
+		padding: 5px 11px 5px 0;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 		width: 100%;
+		vertical-align: middle;
 
 		&:focus-visible {
-			/* outline: 1px solid white; */
 			outline: none;
 		}
 
@@ -255,32 +265,43 @@
 		}
 
 		&.show-indicator {
-			padding: 5px 75px 5px 11px;
-
-			&::after {
-				background-color: var(--primary-accent);
-				border-radius: 8px;
-				content: attr(data-selected);
-				display: block;
-				line-height: 25px;
-				padding: 0 6px;
-				position: absolute;
-				right: 48px;
-				top: 7px;
-			}
+			padding: 5px 40px 5px 11px;
 		}
 	}
 
 	button {
-		font-size: 25px;
-		padding: 0 4px;
+		background: none;
+		background-color: var(--primary-color);
+		border: none;
+		border-radius: 8px;
+		color: #ffffff;
+		display: block;
+		font-family: sans-serif;
+		font-size: 0.9rem;
+		line-height: 1.1rem;
+		opacity: 0.8;
+		padding: 0 6px;
 		position: absolute;
-		right: 20px;
+		right: 22px;
 		top: 50%;
 		transform: translateY(-50%);
-		background: none;
-		border: none;
-		margin: 0;
+
+		&:hover::after {
+			appearance: none;
+			background-color: white;
+			border: none;
+			border-radius: 8px;
+			box-shadow: none;
+			color: var(--primary-color);
+			content: '×';
+			cursor: pointer;
+			font-size: 1.5rem;
+			font-weight: bold;
+			left: 0;
+			padding: 0 3px;
+			position: absolute;
+			top: 0;
+		}
 	}
 
 	label {
