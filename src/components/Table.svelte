@@ -33,7 +33,7 @@
 	 */
 
 	/** @type {TableProps} */
-	let { data, fields, keyAccessor, ...props } = $props();
+	let { data, fields, keyAccessor, onFilteredItemsUpdated, ...props } = $props();
 
 	let loading = $state(true);
 	let tbody = $state();
@@ -189,6 +189,7 @@
 	});
 
 	$effect(() => paginate());
+	$effect(() => onFilteredItemsUpdated?.(filteredItems));
 </script>
 
 <table
