@@ -125,27 +125,14 @@
 					background: var(--secondary-color);
 				}
 			}
-			/* 
-			td:nth-child(4) {
+
+			td:nth-child(3) {
 				text-align: center;
 			}
 
-			td:nth-child(7) a {
-				align-items: center;
-				display: flex;
-				height: var(--row-height);
-				justify-content: center;
-
-				svg {
-					height: 1.2rem;
-					width: 1.2rem;
-				}
-
-				&:hover {
-					color: white;
-					background-color: var(--primary-color);
-				}
-			} */
+			td:nth-child(7) {
+				text-align: center;
+			}
 
 			thead th button::before,
 			thead th button::after {
