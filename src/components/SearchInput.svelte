@@ -30,6 +30,6 @@
 		color: var(--primary-color);
 		line-height: 1.1;
 		outline-color: var(--primary-color);
-		padding: 0.5rem 0.5rem 0.5rem 2rem;
+		padding: 0.2rem 0.5rem 0.2rem 2rem;
 	}
 </style>
