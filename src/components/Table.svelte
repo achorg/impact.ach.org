@@ -28,12 +28,13 @@
 	 * @prop {Field[]} fields
 	 * @prop {string|number} keyAccessor - Accessor (object key or array index) for the primary key.
 	 * @prop {(items: Item[]) => any} [onFilteredItemsUpdated]
+	 * @prop {(item: Item) => any} [onRowClick]
 	 * @prop {string} [id]
 	 * @prop {string} [class]
 	 */
 
 	/** @type {TableProps} */
-	let { data, fields, keyAccessor, onFilteredItemsUpdated, ...props } = $props();
+	let { data, fields, keyAccessor, onFilteredItemsUpdated, onRowClick, ...props } = $props();
 
 	let loading = $state(true);
 	let tbody = $state();
@@ -297,7 +298,7 @@
 
 	<tbody bind:this={tbody} class:loading>
 		{#each filteredAndPagedItems as item (item[keyAccessor])}
-			<tr>
+			<tr onclick={() => onRowClick?.(item)}>
 				{#each fields as field, i}
 					{@const formattedValue = field.format
 						? field.format(item[field.accessor])
