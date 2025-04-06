@@ -10,49 +10,14 @@
 		filteredListItems.reduce((acc, item) => acc + Number(item[19]), 0)
 	);
 
-	/** @param {string} text */
-	const titleCase = (text) => {
-		return text
-			.toLowerCase()
-			.split(' ')
-			.map((word) => word.charAt(0).toUpperCase() + word.substring(1))
-			.join(' ');
-	};
-
-	/** @param {string} url */
-	const formatLink = (url) => {
-		if (!url) return '';
-		return `
-		  <a href="${url}" aria-label="View on SearchWorks">
-				${externalLinkSvg}
-			</a>`;
-	};
-
-	const externalLinkSvg = `
-		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-			<path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6" />
-			<path d="M11 13l9 -9" />
-			<path d="M15 4h5v5" />
-		</svg>	
-	`;
-
 	const fields = [
 		{
 			key: 'project-title',
 			label: 'Project Title',
 			accessor: 4,
 			sortable: true,
-			// format: titleCase,
 			searchable: true
 		},
-		// {
-		// 	key: 'organization',
-		// 	label: 'Organization',
-		// 	accessor: 6,
-		// 	sortable: true,
-		// 	searchable: true,
-		// 	filterable: true
-		// },
 		{ key: 'state', label: 'State', accessor: 8, sortable: true, filterable: true },
 		{
 			key: 'discipline',
@@ -183,12 +148,11 @@
 				}
 			}
 
-			/* 960px is where the table starts to overflow horizontally */
 			@media screen and (max-width: 959px) {
-				td.search {
+				/* td.search {
 					justify-content: flex-start;
 					margin-top: 1rem;
-				}
+				} */
 			}
 		}
 	}
