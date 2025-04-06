@@ -206,7 +206,47 @@
 						oninput={(/** @type {InputEvent} */ event) =>
 							search(/** @type {HTMLInputElement} */ (event.target).value)}
 					/>
-					<button onclick={() => (filterRowOpen = !filterRowOpen)}>filters</button>
+					<button
+						class="show-filters"
+						aria-label="Show/Hide Filters"
+						onclick={() => (filterRowOpen = !filterRowOpen)}
+						class:open={filterRowOpen}
+					>
+						{#if filterRowOpen}
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="24"
+								height="24"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							>
+								<path
+									d="M8 4h12v2.172a2 2 0 0 1 -.586 1.414l-3.914 3.914m-.5 3.5v4l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227"
+								/>
+								<path d="M3 3l18 18" />
+							</svg>
+						{:else}
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="24"
+								height="24"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							>
+								<path
+									d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227z"
+								/>
+							</svg>
+						{/if}
+					</button>
 				</td>
 			</tr>
 		{/if}
@@ -438,6 +478,44 @@
 
 		span {
 			flex-grow: 1;
+		}
+	}
+
+	button.show-filters {
+		background-color: var(--primary-color);
+		border: 1px solid #d2d6dc;
+		border-radius: 5px;
+		color: #ffffff;
+		cursor: pointer;
+		line-height: 1;
+		padding: 5px 14px;
+		user-select: none;
+		white-space: nowrap;
+		margin-left: 1rem;
+		transition: all 0.2s ease-in-out;
+
+		&[disabled] {
+			cursor: not-allowed;
+			opacity: 0.5;
+		}
+
+		&:not([disabled]):hover,
+		&:focus-visible,
+		&.open {
+			background-color: #f7f7f7;
+			border: 1px solid var(--primary-color);
+			color: var(--primary-color);
+		}
+
+		&.open:hover {
+			background-color: var(--primary-color);
+			border: 1px solid #d2d6dc;
+			color: #ffffff;
+		}
+
+		&:focus-visible {
+			outline: 2px solid var(--primary-color);
+			outline-offset: 2px;
 		}
 	}
 
