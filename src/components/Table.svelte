@@ -19,10 +19,15 @@
 	 */
 
 	/**
+	 * @typedef {{[key: string]: number | string}} Item
+	 */
+
+	/**
 	 * @typedef {Object} TableProps
 	 * @prop {Array<Object|Array<any>>} data
 	 * @prop {Field[]} fields
 	 * @prop {string|number} keyAccessor - Accessor (object key or array index) for the primary key.
+	 * @prop {(items: Item[]) => any} [onFilteredItemsUpdated]
 	 * @prop {string} [id]
 	 * @prop {string} [class]
 	 */
@@ -36,8 +41,8 @@
 
 	let filterRowOpen = $state(false);
 
-	let filteredListItems = $state(/** @type {{[key: string]: number | string}[]} */ (data));
-	let filteredAndPagedItems = $state(/** @type {{[key: string]: number | string}[]} */ ([]));
+	let filteredItems = $state(/** @type {Item[]} */ (data));
+	let filteredAndPagedItems = $state(/** @type {Item[]} */ ([]));
 	let currentPage = $state(1);
 	let pageSize = $state(20);
 	let activeFilters = $state(/** @type {{[key: string]: number[] | string[]}} */ ({}));
@@ -45,7 +50,7 @@
 	let sortOrder = $state();
 
 	const paginate = () => {
-		filteredAndPagedItems = filteredListItems.slice(
+		filteredAndPagedItems = filteredItems.slice(
 			0 + (currentPage - 1) * pageSize,
 			0 + (currentPage - 1) * pageSize + pageSize
 		);
@@ -129,19 +134,17 @@
 	};
 
 	const itemFilter = async () => {
-		filteredListItems = /** @type {{[key: string]: number | string}[]} */ (data);
+		filteredItems = /** @type {Item[]} */ (data);
 		if (activeFilters) {
 			Object.entries(activeFilters).forEach(([field, filterArray]) => {
 				if (!filterArray.length) return;
 				const accessor = fields.find((f) => f.key === field)?.accessor;
-				filteredListItems = filteredListItems.filter((item) =>
-					filterArray.includes(item[accessor])
-				);
+				filteredItems = filteredItems.filter((item) => filterArray.includes(item[accessor]));
 			});
 		}
 		if (searchParts.length) {
 			const searchFields = fields.filter((field) => field.searchable);
-			filteredListItems = filteredListItems.filter((item) =>
+			filteredItems = filteredItems.filter((item) =>
 				searchParts.every((searchPart) =>
 					searchFields.some(({ accessor }) => normalizeText(item[accessor]).includes(searchPart))
 				)
@@ -159,7 +162,7 @@
 		const { key, accessor } = field;
 		sortOrder = sortOrder === `${key}-asc` ? `${key}-desc` : `${key}-asc`;
 		const asc = sortOrder.endsWith('asc');
-		filteredListItems = filteredListItems.sort((a, b) => {
+		filteredItems = filteredItems.sort((a, b) => {
 			if (a[accessor] < b[accessor]) return asc ? -1 : 1;
 			if (a[accessor] > b[accessor]) return asc ? 1 : -1;
 			return 0;
@@ -311,23 +314,23 @@
 	</tbody>
 </table>
 <div class="pagination">
-	{#if filteredListItems.length === 0}
+	{#if filteredItems.length === 0}
 		No results
 	{:else}
 		{@const pageStart = pageSize * (currentPage - 1) + 1}
 		<span aria-live="assertive">
 			Showing <strong>{pageStart}</strong> to
 			<strong>
-				{Math.min(pageStart + pageSize - 1, filteredListItems.length)}
+				{Math.min(pageStart + pageSize - 1, filteredItems.length)}
 			</strong>
-			of <strong>{filteredListItems.length.toLocaleString()}</strong>
+			of <strong>{filteredItems.length.toLocaleString()}</strong>
 		</span>
 
 		<button disabled={currentPage === 1} onclick={() => (currentPage -= 1)}>
 			&laquo; Previous
 		</button>
 		<button
-			disabled={currentPage * pageSize >= filteredListItems.length}
+			disabled={currentPage * pageSize >= filteredItems.length}
 			onclick={() => (currentPage += 1)}
 		>
 			Next &raquo;

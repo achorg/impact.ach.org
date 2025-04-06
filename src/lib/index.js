@@ -7,13 +7,13 @@ export const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
  * requested property with the passed value and returns
  * the element if the value is a match
  *
- * @param   {HTMLElement} element Element to start from.
+ * @param   {HTMLElement|null} element Element to start from.
  * @param   {string} property CSS property to research.
  * @param   {string} value Value to compare CSS property value with.
  * @returns {HTMLElement|null}
  */
 export const findParentWithCSS = (element, property, value) => {
-	element = element.parentElement;
+	element = element?.parentElement || null;
 	while (element !== null) {
 		const style = window.getComputedStyle(element);
 		const propValue = style.getPropertyValue(property);
