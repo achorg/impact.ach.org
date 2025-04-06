@@ -72,7 +72,7 @@
 		},
 		{
 			key: 'division-or-office',
-			label: 'Division or Office',
+			label: 'Div./Office',
 			accessor: 16,
 			sortable: true,
 			searchable: true,
@@ -80,15 +80,13 @@
 		},
 		{
 			key: 'congressional-district',
-			label: 'Con. Dist.',
+			label: 'District',
 			accessor: 30,
 			sortable: true,
 			searchable: true,
 			filterable: true
 		}
 	];
-
-	// awards.forEach((award, i) => (award[7] = i.toString()));
 
 	const onFilteredItemsUpdated = (/** @type {Item[]} */ items) => {
 		filteredListItems = items;
@@ -119,7 +117,7 @@
 					minmax(115px, 0.5fr) /* Discipline */
 					minmax(115px, 0.5fr) /* Grant Program */
 					minmax(115px, 0.5fr) /* Division or Office */
-					120px /* Congressional District */;
+					100px /* Congressional District */;
 			}
 
 			thead {
