@@ -45,14 +45,14 @@
 			// format: titleCase,
 			searchable: true
 		},
-		{
-			key: 'organization',
-			label: 'Organization',
-			accessor: 6,
-			sortable: true,
-			searchable: true,
-			filterable: true
-		},
+		// {
+		// 	key: 'organization',
+		// 	label: 'Organization',
+		// 	accessor: 6,
+		// 	sortable: true,
+		// 	searchable: true,
+		// 	filterable: true
+		// },
 		{ key: 'state', label: 'State', accessor: 8, sortable: true, filterable: true },
 		{
 			key: 'discipline',
@@ -91,13 +91,24 @@
 	const onFilteredItemsUpdated = (/** @type {Item[]} */ items) => {
 		filteredListItems = items;
 	};
+
+	const onRowClick = (/** @type {Item} */ item) => {
+		console.log(item);
+	};
 </script>
 
 <div class="totals">
 	Terminated Awards Filtered: <span>{filteredItemsCount.toLocaleString()}</span>; Total Value:
 	<span>${filteredItemsValue.toLocaleString()}</span>
 </div>
-<Table data={awards} {fields} keyAccessor={0} id="awards-table" {onFilteredItemsUpdated} />
+<Table
+	data={awards}
+	{fields}
+	keyAccessor={0}
+	id="awards-table"
+	{onFilteredItemsUpdated}
+	{onRowClick}
+/>
 
 <style>
 	.totals span {
@@ -111,12 +122,12 @@
 			thead,
 			tbody {
 				grid-template-columns:
-					minmax(250px, 1.5fr) /* Project Title */
-					minmax(150px, 1fr) /* Organization */
+					minmax(250px, 1.3fr) /* Project Title */
+					/* minmax(150px, 1fr) /* Organization */
 					80px /* State */
-					minmax(115px, 0.5fr) /* Discipline */
+					minmax(115px, 0.35fr) /* Discipline */
 					minmax(115px, 0.5fr) /* Grant Program */
-					minmax(115px, 0.5fr) /* Division or Office */
+					minmax(115px, 0.35fr) /* Division or Office */
 					100px /* Congressional District */;
 			}
 
@@ -145,11 +156,11 @@
 				}
 			}
 
-			td:nth-child(3) {
+			td:nth-child(2) {
 				text-align: center;
 			}
 
-			td:nth-child(7) {
+			td:nth-child(6) {
 				text-align: center;
 			}
 
