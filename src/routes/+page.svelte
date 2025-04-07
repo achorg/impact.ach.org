@@ -6,6 +6,7 @@
 	/** @import { Item } from '$components/Table.svelte' */
 
 	import awards from '../data/terminated-awards.2025-04-04.json';
+	import accessors from '../data/accessors.json';
 
 	let filteredListItems = $state(/** @type {Item[]} */ ([]));
 	let filteredItemsCount = $derived(filteredListItems?.length);
@@ -17,15 +18,21 @@
 		{
 			key: 'project-title',
 			label: 'Project Title',
-			accessor: 4,
+			accessor: accessors.projectTitle,
 			sortable: true,
 			searchable: true
 		},
-		{ key: 'state', label: 'State', accessor: 8, sortable: true, filterable: true },
+		{
+			key: 'state',
+			label: 'State',
+			accessor: accessors.orgState,
+			sortable: true,
+			filterable: true
+		},
 		{
 			key: 'discipline',
 			label: 'Discipline',
-			accessor: 14,
+			accessor: accessors.discipline,
 			sortable: true,
 			searchable: true,
 			filterable: true
@@ -33,7 +40,7 @@
 		{
 			key: 'grant-program',
 			label: 'Grant Program',
-			accessor: 15,
+			accessor: accessors.grantProgram,
 			sortable: true,
 			searchable: true,
 			filterable: true
@@ -41,7 +48,7 @@
 		{
 			key: 'division-or-office',
 			label: 'Div./Office',
-			accessor: 16,
+			accessor: accessors.divisionOrOffice,
 			sortable: true,
 			searchable: true,
 			filterable: true
@@ -49,7 +56,7 @@
 		{
 			key: 'congressional-district',
 			label: 'District',
-			accessor: 30,
+			accessor: accessors.district,
 			sortable: true,
 			filterable: true
 		}
