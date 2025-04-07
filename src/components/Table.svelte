@@ -529,6 +529,10 @@
 			outline: 2px solid var(--primary-color);
 			outline-offset: 2px;
 		}
+
+		svg {
+			pointer-events: none;
+		}
 	}
 
 	@keyframes set-overflow {
