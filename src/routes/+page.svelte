@@ -51,7 +51,6 @@
 			label: 'District',
 			accessor: 30,
 			sortable: true,
-			searchable: true,
 			filterable: true
 		}
 	];
