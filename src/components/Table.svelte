@@ -16,6 +16,7 @@
 	 * @prop {boolean} [html]
 	 * @prop {boolean} [sortable]
 	 * @prop {boolean} [searchable]
+	 * @prop {boolean} [filterable]
 	 * @prop {(value: any) => string} [format]
 	 */
 
@@ -29,7 +30,7 @@
 	 * @prop {Field[]} fields
 	 * @prop {string|number} keyAccessor - Accessor (object key or array index) for the primary key.
 	 * @prop {(items: Item[]) => any} [onFilteredItemsUpdated]
-	 * @prop {(item: Item) => any} [onRowClick]
+	 * @prop {(event: MouseEvent, item: Item) => any} [onRowClick]
 	 * @prop {string} [id]
 	 * @prop {string} [class]
 	 */
@@ -71,6 +72,10 @@
 		return text;
 	};
 
+	/**
+	 * @param {Field} field
+	 * @returns {{value: string, label: string}[]}
+	 */
 	const getOptions = (field) => {
 		const { accessor } = field;
 		const options = Object.entries(
@@ -286,7 +291,7 @@
 							class="checkbox-multiselect"
 							options={getOptions(field)}
 							selectId="abc"
-							onSelectedValuesUpdated={async (values) => {
+							onSelectedValuesUpdated={async (/** @type {string[]} */ values) => {
 								activeFilters[field.key] = values;
 								loading = true;
 								await sleep(0);

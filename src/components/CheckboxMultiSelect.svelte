@@ -9,6 +9,7 @@
 	 * @prop {string} selectId
 	 * @prop {function} [onSelectedValuesUpdated]
 	 * @prop {string} [placeHolder]
+	 * @prop {string} [class]
 	 */
 
 	/** @type {CheckboxMultiSelectProps} */
