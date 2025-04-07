@@ -11,7 +11,7 @@
 	let filteredListItems = $state(/** @type {Item[]} */ ([]));
 	let filteredItemsCount = $derived(filteredListItems?.length);
 	let filteredItemsValue = $derived(
-		filteredListItems.reduce((acc, item) => acc + Number(item[19]), 0)
+		filteredListItems.reduce((acc, item) => acc + Number(item[accessors.awardedOutright]), 0)
 	);
 
 	const fields = [
