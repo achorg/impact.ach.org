@@ -352,8 +352,9 @@
 <style>
 	.controls {
 		display: flex;
-		justify-content: flex-start;
 		gap: 1rem;
+		justify-content: flex-start;
+		padding-left: 2px;
 	}
 
 	table {
