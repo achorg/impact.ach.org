@@ -25,7 +25,7 @@
 
 <footer>
 	<a
-		href="https://github.com/achorg"
+		href="https://github.com/achorg/impact.ach.org"
 		target="_blank"
 		rel="noopener noreferrer"
 		aria-label="GitHub Repository"
