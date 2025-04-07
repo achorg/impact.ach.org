@@ -51,6 +51,7 @@
 	let activeFilters = $state(/** @type {{[key: string]: number[] | string[]}} */ ({}));
 	let searchParts = $state(/** @type {string[]} */ ([]));
 	let sortOrder = $state();
+	let thead = $state();
 
 	const paginate = () => {
 		filteredAndPagedItems = filteredItems.slice(
@@ -262,7 +263,7 @@
 	`}
 	{...props}
 >
-	<thead>
+	<thead bind:this={thead}>
 		<tr>
 			{#each fields as field}
 				{#if field.sortable}
@@ -307,10 +308,8 @@
 	<tbody
 		bind:this={tbody}
 		class:loading
-		onscroll={(e) => {
-			if (e.target.scrollLeft) {
-				document.querySelector('thead').style.translate = `-${e.target.scrollLeft}px 0`;
-			}
+		onscroll={(event) => {
+			thead.style.translate = `-${/** @type {HTMLElement} */ (event.target)?.scrollLeft}px 0`;
 		}}
 	>
 		{#each filteredAndPagedItems as item (item[keyAccessor])}
