@@ -142,9 +142,9 @@
 
 <style>
 	summary {
-		font-weight: bold;
 		color: var(--primary-color);
 		font-size: 1.2rem;
+		font-weight: bold;
 	}
 
 	details p {
@@ -161,13 +161,14 @@
 	}
 
 	dt {
-		font-weight: bold;
 		color: var(--primary-color);
 		font-size: 1.1rem;
+		font-weight: bold;
 	}
 
 	dd {
-		padding-left: 0.5rem;
+		break-before: avoid;
 		margin-bottom: 0.5rem;
+		padding-left: 0.5rem;
 	}
 </style>
