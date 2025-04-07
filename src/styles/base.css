@@ -32,7 +32,7 @@ body {
 	height: 100vh;
 	margin: 0 auto;
 	max-width: 1680px;
-	padding: 2rem min(2rem, 2vw) min(2rem, 2vh);
+	padding: min(2rem, 2vh) min(2rem, 2vw) min(2rem, 2vh);
 	width: 100vw;
 }
 
