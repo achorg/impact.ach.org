@@ -3,7 +3,8 @@
 
 	import CheckboxMultiSelect from '$components/CheckboxMultiSelect.svelte';
 	import SearchInput from '$components/SearchInput.svelte';
-	import { tooltip } from '$lib/actions/tooltip-when-truncated';
+	import { tooltip } from '$lib/actions/tooltip';
+	import { tooltip as tooltipWhenTruncated } from '$lib/actions/tooltip-when-truncated';
 
 	import loaderWebP from '../img/loading.webp';
 
@@ -193,6 +194,59 @@
 	$effect(() => onFilteredItemsUpdated?.(filteredItems));
 </script>
 
+<div class="controls">
+	{#if fields.some(({ searchable }) => searchable)}
+		<SearchInput
+			oninput={(/** @type {InputEvent} */ event) =>
+				search(/** @type {HTMLInputElement} */ (event.target).value)}
+		/>
+	{/if}
+	{#if fields.some(({ filterable }) => filterable)}
+		<button
+			class="show-filters"
+			aria-label="Show/Hide Filters"
+			onclick={() => (filterRowOpen = !filterRowOpen)}
+			class:open={filterRowOpen}
+			use:tooltip={{ content: filterRowOpen ? 'Hide Filters' : 'Show Filters' }}
+		>
+			{#if filterRowOpen}
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="24"
+					height="24"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<path
+						d="M8 4h12v2.172a2 2 0 0 1 -.586 1.414l-3.914 3.914m-.5 3.5v4l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227"
+					/>
+					<path d="M3 3l18 18" />
+				</svg>
+			{:else}
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="24"
+					height="24"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<path
+						d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227z"
+					/>
+				</svg>
+			{/if}
+		</button>
+	{/if}
+</div>
+
 <table
 	aria-label="Jewish Cookbook Recipes"
 	aria-rowcount={pageSize}
@@ -204,57 +258,6 @@
 	{...props}
 >
 	<thead>
-		{#if fields.some(({ searchable }) => searchable)}
-			<tr>
-				<td class="search">
-					<SearchInput
-						oninput={(/** @type {InputEvent} */ event) =>
-							search(/** @type {HTMLInputElement} */ (event.target).value)}
-					/>
-					<button
-						class="show-filters"
-						aria-label="Show/Hide Filters"
-						onclick={() => (filterRowOpen = !filterRowOpen)}
-						class:open={filterRowOpen}
-					>
-						{#if filterRowOpen}
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="24"
-								height="24"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							>
-								<path
-									d="M8 4h12v2.172a2 2 0 0 1 -.586 1.414l-3.914 3.914m-.5 3.5v4l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227"
-								/>
-								<path d="M3 3l18 18" />
-							</svg>
-						{:else}
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="24"
-								height="24"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							>
-								<path
-									d="M4 4h16v2.172a2 2 0 0 1 -.586 1.414l-4.414 4.414v7l-6 2v-8.5l-4.48 -4.928a2 2 0 0 1 -.52 -1.345v-2.227z"
-								/>
-							</svg>
-						{/if}
-					</button>
-				</td>
-			</tr>
-		{/if}
 		<tr>
 			{#each fields as field}
 				{#if field.sortable}
@@ -296,7 +299,15 @@
 		</tr>
 	</thead>
 
-	<tbody bind:this={tbody} class:loading>
+	<tbody
+		bind:this={tbody}
+		class:loading
+		onscroll={(e) => {
+			if (e.target.scrollLeft) {
+				document.querySelector('thead').style.translate = `-${e.target.scrollLeft}px 0`;
+			}
+		}}
+	>
 		{#each filteredAndPagedItems as item (item[keyAccessor])}
 			<tr onclick={() => onRowClick?.(item)}>
 				{#each fields as field, i}
@@ -306,9 +317,9 @@
 					{@const value =
 						searchParts && field.searchable ? markupMatches(formattedValue) : formattedValue}
 					{#if i === 0}
-						<th scope="row" use:tooltip={{ content: value }}>{@html value}</th>
+						<th scope="row" use:tooltipWhenTruncated={{ content: value }}>{@html value}</th>
 					{:else}
-						<td use:tooltip={{ content: value }}>{@html value}</td>
+						<td use:tooltipWhenTruncated={{ content: value }}>{@html value}</td>
 					{/if}
 				{/each}
 			</tr>
@@ -321,11 +332,9 @@
 	{:else}
 		{@const pageStart = pageSize * (currentPage - 1) + 1}
 		<span aria-live="assertive">
-			Showing <strong>{pageStart}</strong> to
-			<strong>
+			Showing <strong>{pageStart}</strong>&nbsp;to&nbsp;<strong>
 				{Math.min(pageStart + pageSize - 1, filteredItems.length)}
-			</strong>
-			of <strong>{filteredItems.length.toLocaleString()}</strong>
+			</strong>&nbsp;of&nbsp;<strong>{filteredItems.length.toLocaleString()}</strong>
 		</span>
 
 		<button disabled={currentPage === 1} onclick={() => (currentPage -= 1)}>
@@ -341,6 +350,12 @@
 </div>
 
 <style>
+	.controls {
+		display: flex;
+		justify-content: flex-start;
+		gap: 1rem;
+	}
+
 	table {
 		--n-columns: 2;
 		--row-height: 35px;
@@ -360,14 +375,7 @@
 
 	thead {
 		padding-right: var(--scrollbar-offset);
-
-		td.search {
-			display: flex;
-			grid-column: 1 / -1;
-			height: auto;
-			justify-content: flex-end;
-			padding: 4px;
-		}
+		z-index: 1;
 	}
 
 	tr.filters {
@@ -494,15 +502,9 @@
 		cursor: pointer;
 		line-height: 1;
 		padding: 5px 14px;
+		transition: all 0.2s ease-in-out;
 		user-select: none;
 		white-space: nowrap;
-		margin-left: 1rem;
-		transition: all 0.2s ease-in-out;
-
-		&[disabled] {
-			cursor: not-allowed;
-			opacity: 0.5;
-		}
 
 		&:not([disabled]):hover,
 		&:focus-visible,

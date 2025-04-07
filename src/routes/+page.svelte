@@ -63,8 +63,8 @@
 </script>
 
 <div class="totals">
-	Terminated Awards Filtered: <span>{filteredItemsCount.toLocaleString()}</span>; Total Value:
-	<span>${filteredItemsValue.toLocaleString()}</span>
+	Terminated&nbsp;Awards&nbsp;Filtered:&nbsp;<span>{filteredItemsCount.toLocaleString()}</span>;
+	Total&nbsp;Value:&nbsp;<span>${filteredItemsValue.toLocaleString()}</span>
 </div>
 <Table
 	data={awards}
@@ -97,8 +97,6 @@
 			}
 
 			thead {
-				border-bottom: 2px solid currentColor;
-
 				th {
 					font-size: 1.2rem;
 					font-weight: bold;
@@ -109,6 +107,7 @@
 
 			tbody {
 				/* min-height: calc(var(--row-height) * 2); */
+				border-top: 2px solid currentColor;
 
 				tr:nth-child(even) td,
 				tr:nth-child(even) th {
@@ -158,7 +157,6 @@
 	}
 
 	:global(.pagination) {
-		flex-wrap: wrap;
 		:global {
 			button {
 				background-color: var(--primary-color);
