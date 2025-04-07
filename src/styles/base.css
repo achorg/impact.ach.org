@@ -1,9 +1,12 @@
 :root {
-	--primary-color: #8d5291;
-	--secondary-color: #c9a5cb;
-	--tertiary-color: #dcd2dd;
+	--primary-color: #3a4b5e;
+	--secondary-color: #b3beca;
+	--tertiary-color: #dfe5eb;
 
-	--font-family: 'Battambang', sans-serif;
+	--background-color: white;
+	--text-color: #27323e;
+
+	--font-family: 'Libre Franklin Variable', sans-serif;
 
 	--border-radius: 5px;
 }
@@ -15,8 +18,8 @@
 
 body {
 	accent-color: var(--primary-color);
-	background: #c8b8c9;
-	color: #574358;
+	background: var(--background-color);
+	color: var(--text-color);
 	font-family: var(--font-family);
 	overflow: hidden;
 }

@@ -1,6 +1,6 @@
 <script>
 	import { base } from '$app/paths';
-	import '@fontsource/battambang';
+	import '@fontsource-variable/libre-franklin';
 	import '../styles/reset.css';
 	import '../styles/base.css';
 </script>

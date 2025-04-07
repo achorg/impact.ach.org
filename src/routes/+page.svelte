@@ -83,6 +83,9 @@
 />
 
 <style>
+	.totals {
+		margin-bottom: 1rem;
+	}
 	.totals span {
 		font-weight: bold;
 		color: var(--primary-color);
@@ -115,6 +118,10 @@
 			tbody {
 				/* min-height: calc(var(--row-height) * 2); */
 				border-top: 2px solid currentColor;
+
+				th {
+					font-weight: 600;
+				}
 
 				tr:nth-child(even) td,
 				tr:nth-child(even) th {
