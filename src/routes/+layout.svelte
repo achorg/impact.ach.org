@@ -3,6 +3,8 @@
 	import '@fontsource-variable/libre-franklin';
 	import '../styles/reset.css';
 	import '../styles/base.css';
+
+	import achLogo from '../img/logo.png';
 </script>
 
 <svelte:head>
@@ -12,6 +14,9 @@
 
 <header>
 	<h1><a href="{base}/">NEH Grants 2025</a></h1>
+	<a href="https://ach.org/" target="_blank" rel="noopener noreferrer">
+		<img src={achLogo} height="40" alt="Association for Computing and the Humanities" />
+	</a>
 </header>
 
 <main>
@@ -38,7 +43,9 @@
 	header {
 		align-items: center;
 		display: flex;
+		flex-wrap: wrap-reverse;
 		gap: 1rem;
+		justify-content: space-between;
 
 		h1 a {
 			text-decoration: none;
@@ -46,6 +53,10 @@
 			&:hover {
 				border-bottom: 1px solid currentColor;
 			}
+		}
+
+		img {
+			filter: invert(27%) sepia(17%) saturate(873%) hue-rotate(171deg) brightness(91%) contrast(88%);
 		}
 	}
 
