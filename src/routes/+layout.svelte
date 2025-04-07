@@ -9,6 +9,19 @@
 	import { mount, unmount } from 'svelte';
 	import About from '$components/About.svelte';
 	import { tooltip } from '$lib/actions/tooltip';
+
+	import { onMount } from 'svelte';
+
+	onMount(() => {
+		if (localStorage.getItem('about-shown')) return;
+
+		const about = mount(About, {
+			target: document.body,
+			props: { close: () => unmount(about) }
+		});
+
+		localStorage.setItem('about-shown', 'true');
+	});
 </script>
 
 <svelte:head>
