@@ -55,7 +55,7 @@ function tooltip(node, params) {
 	});
 
 	return {
-		update: (/** @type Object */ newParams) => {
+		update: (/** @type TooltipParams */ newParams) => {
 			content = newParams?.content || (node instanceof HTMLElement ? node.title : null);
 			tooltip.innerHTML = content;
 		},
