@@ -1,4 +1,7 @@
 <script>
+	import { mount, unmount } from 'svelte';
+
+	import Details from '$components/Details.svelte';
 	import Table from '$components/Table.svelte';
 	/** @import { Item } from '$components/Table.svelte' */
 
@@ -57,8 +60,12 @@
 		filteredListItems = items;
 	};
 
-	const onRowClick = (/** @type {Item} */ item) => {
-		console.log(item);
+	const onRowClick = async (event, /** @type {Item} */ item) => {
+		event.stopPropagation();
+		const details = mount(Details, {
+			target: document.body,
+			props: { item, close: () => unmount(details) }
+		});
 	};
 </script>
 

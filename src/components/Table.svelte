@@ -309,7 +309,7 @@
 		}}
 	>
 		{#each filteredAndPagedItems as item (item[keyAccessor])}
-			<tr onclick={() => onRowClick?.(item)}>
+			<tr onclick={(event) => onRowClick?.(event, item)}>
 				{#each fields as field, i}
 					{@const formattedValue = field.format
 						? field.format(item[field.accessor])
