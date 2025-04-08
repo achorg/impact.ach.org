@@ -266,7 +266,8 @@
 		}
 
 		&.show-indicator {
-			padding: 5px 40px 5px 11px;
+			padding: 5px 0;
+			width: calc(100% - 40px);
 		}
 	}
 
