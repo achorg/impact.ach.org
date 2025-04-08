@@ -37,7 +37,7 @@
 <style>
 	p {
 		font-size: 1.4rem;
-		padding: 0.5rem 1rem;
+		padding: 0.5rem min(1rem, 1vw);
 
 		&:first-child {
 			margin-top: 1.5rem;

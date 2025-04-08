@@ -359,6 +359,7 @@
 		gap: 1rem;
 		justify-content: flex-start;
 		padding-left: 2px;
+		margin-bottom: 0.5rem;
 	}
 
 	table {
