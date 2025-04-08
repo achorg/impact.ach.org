@@ -4,6 +4,7 @@
 	import Details from '$components/Details.svelte';
 	import Table from '$components/Table.svelte';
 	/** @import { Item } from '$components/Table.svelte' */
+	import { tooltip } from '$lib/actions/tooltip';
 
 	import awards from '../data/terminated-awards.2025-04-04.json';
 	import accessors from '../data/accessors.json';
@@ -13,6 +14,22 @@
 	let filteredItemsValue = $derived(
 		filteredListItems.reduce((acc, item) => acc + Number(item[accessors.awardedOutright]), 0)
 	);
+
+	let proportionOfFederalBudget = $derived.by(() => {
+		const prop = filteredItemsValue / (6.752 * 1000000000000);
+		switch (true) {
+			case prop < 0.00000001:
+				return 'less than one millionth of 1';
+			case prop < 0.0000001:
+				return 'less than one hundred-thousandth of 1';
+			case prop < 0.000001:
+				return 'less than one ten-thousandth of 1';
+			case prop < 0.00001:
+				return 'less than one thousandth of 1';
+			default:
+				return prop.toPrecision(2);
+		}
+	});
 
 	const fields = [
 		{
@@ -78,6 +95,22 @@
 <div class="totals">
 	Terminated&nbsp;Awards&nbsp;Filtered:&nbsp;<span>{filteredItemsCount.toLocaleString()}</span>;
 	Total&nbsp;Value:&nbsp;<span>${filteredItemsValue.toLocaleString()}</span>
+	<svg
+		xmlns="http://www.w3.org/2000/svg"
+		width="24"
+		height="24"
+		viewBox="0 0 24 24"
+		fill="none"
+		stroke="currentColor"
+		stroke-width="2"
+		stroke-linecap="round"
+		stroke-linejoin="round"
+		use:tooltip={{ content: `${proportionOfFederalBudget}% of the Federal Budget` }}
+	>
+		<path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9 -9 9s-9 -1.8 -9 -9s1.8 -9 9 -9z" />
+		<path d="M12 16v.01" />
+		<path d="M12 13a2 2 0 0 0 .914 -3.782a1.98 1.98 0 0 0 -2.414 .483" />
+	</svg>
 </div>
 <Table
 	data={awards}
@@ -91,11 +124,17 @@
 <style>
 	.totals {
 		margin-bottom: 1rem;
-	}
-	.totals span {
-		font-weight: bold;
-		color: var(--primary-color);
-		font-size: 1.2rem;
+		span {
+			font-weight: bold;
+			color: var(--primary-color);
+			font-size: 1.2rem;
+		}
+
+		svg {
+			display: inline-block;
+			margin-left: 0.25rem;
+			vertical-align: text-bottom;
+		}
 	}
 
 	:global(#awards-table) {
