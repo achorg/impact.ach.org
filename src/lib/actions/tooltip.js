@@ -56,10 +56,9 @@ function tooltip(node, params) {
 
 	return {
 		update: (/** @type TooltipParams */ newParams) => {
-			let content = newParams?.content || (node instanceof HTMLElement ? node.title : null);
-			const label = node.getAttribute('aria-label');
-			content = content ?? label;
-			tooltip.innerHTML = content;
+			content = newParams?.content || (node instanceof HTMLElement ? node.title : null);
+			content = content ?? node.getAttribute('aria-label');
+			if (tooltip) tooltip.innerHTML = content;
 		},
 
 		destroy: () => {
