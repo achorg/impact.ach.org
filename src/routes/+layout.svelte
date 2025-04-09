@@ -73,6 +73,14 @@
 	<slot />
 </main>
 
+{#if !import.meta.env.DEV}
+	<script
+		defer
+		src="https://umami.adho.org/visit.js"
+		data-website-id="a43e6843-af37-4c81-b6bd-546ef289ae2b"
+	></script>
+{/if}
+
 <style>
 	header {
 		align-items: center;
