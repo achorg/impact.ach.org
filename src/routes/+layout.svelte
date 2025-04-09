@@ -12,6 +12,9 @@
 
 	import { onMount } from 'svelte';
 
+	/** @type {import('./$types').PageData} */
+	export let data;
+
 	onMount(() => {
 		if (localStorage.getItem('about-shown')) return;
 
@@ -27,6 +30,8 @@
 <svelte:head>
 	<title>NEH Grants 2025</title>
 	<meta name="description" content="NEH Grants 2025" />
+	<meta name="version" content={data.commit} />
+	<meta name="dcterms.modified" content={data.datetime} />
 </svelte:head>
 
 <header>
