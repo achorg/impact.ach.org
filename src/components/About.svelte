@@ -13,10 +13,9 @@
 {#snippet content()}
 	<p>
 		This database includes National Endowment for the Humanities (NEH) grants that were canceled by
-		DOGE as of Tuesday, April 8th. It does not include individual fellowships. We understand that
-		around 40 projects remain funded, including some that have been reinstated. Please reach out if
-		a cancelled grant has not been included by emailing comms@ach.org, or if you see a grant on this
-		list that has been reinstated.
+		DOGE as of Tuesday, April 8th. We understand that around 40 projects remain funded, including
+		some that have been reinstated. Please reach out if a cancelled grant has not been included by
+		emailing comms@ach.org, or if you see a grant on this list that has been reinstated.
 	</p>
 
 	<p>
