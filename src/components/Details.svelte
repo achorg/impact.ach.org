@@ -100,12 +100,16 @@
 	</dl>
 	<hr />
 	<p>
-		Representative: <strong>{reps[repLastName]} {reps[repFirstName]}</strong> ({item[district]}, {reps[
-			repParty
-		]})<br />
-		URL: <a href={reps[repUrl]}>{reps[repUrl]}</a><br />
-		{reps[repAddress]}<br />
-		Tel: {reps[repPhone]}
+		{#if reps[repLastName]}
+			Representative: <strong>{reps[repLastName]} {reps[repFirstName]}</strong> ({item[district]}, {reps[
+				repParty
+			]})<br />
+			URL: <a href={reps[repUrl]}>{reps[repUrl]}</a><br />
+			{reps[repAddress]}<br />
+			Tel: {reps[repPhone]}
+		{:else}
+			No Representative Data
+		{/if}
 	</p>
 	<p>
 		{#if reps[sen1LastName]}
