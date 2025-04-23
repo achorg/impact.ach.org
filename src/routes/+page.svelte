@@ -6,13 +6,15 @@
 	/** @import { Item } from '$components/Table.svelte' */
 	import { tooltip } from '$lib/actions/tooltip';
 
-	import awards from '../data/terminated-awards.2025-04-04.json';
+	import awards from '../data/terminated-awards.2025-04-23.json';
 	import accessors from '../data/accessors.json';
+
+	const accessorMap = Object.fromEntries(accessors.awards.map((key, i) => [key, i]));
 
 	let filteredListItems = $state(/** @type {Item[]} */ ([]));
 	let filteredItemsCount = $derived(filteredListItems?.length);
 	let filteredItemsValue = $derived(
-		filteredListItems.reduce((acc, item) => acc + Number(item[accessors.awardedOutright]), 0)
+		filteredListItems.reduce((acc, item) => acc + Number(item[accessorMap.awardedOutright]), 0)
 	);
 
 	let proportionOfFederalBudget = $derived.by(() => {
@@ -35,21 +37,21 @@
 		{
 			key: 'project-title',
 			label: 'Project Title',
-			accessor: accessors.projectTitle,
+			accessor: accessorMap.projectTitle,
 			sortable: true,
 			searchable: true
 		},
 		{
 			key: 'state',
 			label: 'State',
-			accessor: accessors.orgState,
+			accessor: accessorMap.orgState,
 			sortable: true,
 			filterable: true
 		},
 		{
 			key: 'discipline',
 			label: 'Discipline',
-			accessor: accessors.discipline,
+			accessor: accessorMap.discipline,
 			sortable: true,
 			searchable: true,
 			filterable: true
@@ -57,7 +59,7 @@
 		{
 			key: 'grant-program',
 			label: 'Grant Program',
-			accessor: accessors.grantProgram,
+			accessor: accessorMap.grantProgram,
 			sortable: true,
 			searchable: true,
 			filterable: true
@@ -65,7 +67,7 @@
 		{
 			key: 'division-or-office',
 			label: 'Div./Office',
-			accessor: accessors.divisionOrOffice,
+			accessor: accessorMap.divisionOrOffice,
 			sortable: true,
 			searchable: true,
 			filterable: true
@@ -73,7 +75,7 @@
 		{
 			key: 'congressional-district',
 			label: 'District',
-			accessor: accessors.district,
+			accessor: accessorMap.district,
 			sortable: true,
 			filterable: true
 		}
